@@ -1,10 +1,11 @@
 import './App.css'
+import MainHeader from './components/main-header/MainHeader'
 import PostsList from './components/posts-list/PostsList'
 
 function App() {
   return (
     <main>
-      <h1>Welcome to Posts Application!</h1>
+      <MainHeader />
       <PostsList />
     </main>
   )

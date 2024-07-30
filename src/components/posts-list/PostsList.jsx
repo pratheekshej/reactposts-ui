@@ -1,26 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Post from '../post/Post'
 import classes from './PostsList.module.css'
 import NewPost from '../new-post/NewPost';
-
-const posts = [
-    { author: 'Tester 1', body: 'Test Content 1' },
-    { author: 'Tester 2', body: 'Test Content 2' },
-];
+import Modal from '../modal/Modal';
+import { useToggleModal } from '../../contexts/ModalProvider';
 
 const PostsList = () => {
+    const { isModalVisible, setCloseModal, newPost } = useToggleModal();
+    const [appPosts, setAppPosts] = useState([]);
+
+    useEffect(() => {
+        if (newPost) {
+            setAppPosts((prevPosts) => ([...prevPosts, { ...newPost, id: prevPosts.length + 1 }]));
+        }
+    }, [newPost]);
+
     return (
         <>
-            <NewPost />
+            {
+                isModalVisible &&
+                <Modal onClose={setCloseModal}>
+                    <NewPost />
+                </Modal>
+            }
             <ul className={classes.posts}>
-                {posts.map(post => (
+                {appPosts.map(post => (
                     <Post
-                        key={post.author}
+                        key={post.id}
                         author={post.author}
                         body={post.body}
                     />
                 ))}
             </ul>
+            {appPosts.length === 0 && <h1>There are no posts yet...</h1>}
         </>
     )
 }

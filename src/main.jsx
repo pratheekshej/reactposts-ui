@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import { ModalProvider } from './contexts/ModalProvider.jsx';
 
 const root = document.getElementById('root');
 const reactDOM = ReactDOM.createRoot(root);
@@ -14,6 +15,8 @@ const reactDOM = ReactDOM.createRoot(root);
  */
 reactDOM.render(
   <React.StrictMode>
-    <App />
+    <ModalProvider>
+      <App />
+    </ModalProvider>
   </React.StrictMode>
 )
