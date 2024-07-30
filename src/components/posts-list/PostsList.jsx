@@ -4,14 +4,26 @@ import classes from './PostsList.module.css'
 import NewPost from '../new-post/NewPost';
 import Modal from '../modal/Modal';
 import { useToggleModal } from '../../contexts/ModalProvider';
+import { API } from '../../js/api';
 
-const PostsList = () => {
+const PostsList = ({ posts }) => {
     const { isModalVisible, setCloseModal, newPost } = useToggleModal();
-    const [appPosts, setAppPosts] = useState([]);
+    const [appPosts, setAppPosts] = useState(posts);
 
     useEffect(() => {
         if (newPost) {
-            setAppPosts((prevPosts) => ([...prevPosts, { ...newPost, id: prevPosts.length + 1 }]));
+            const addNewPost = async () => {
+                const response = await window.fetch(`${API}/posts`, {
+                    method: 'POST',
+                    body: JSON.stringify(newPost),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const { post } = await response.json();
+                setAppPosts((prevPosts) => ([post, ...prevPosts]));
+            }
+            addNewPost();
         }
     }, [newPost]);
 
