@@ -1,18 +1,29 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/modal/Modal';
-import { useToggleModal } from '../../contexts/ModalProvider';
 import classes from './NewPost.module.css';
+import { API } from '../../js/api';
 
 const NewPost = ({ }) => {
-    const { addNewPost, setCloseModal } = useToggleModal();
     const navigate = useNavigate();
 
-    const handleSubmitPosts = (e) => {
+    const handleSubmitPosts = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        addNewPost(Object.fromEntries(formData));
-        e.target.reset();
-        setCloseModal(false);
+        const newPost = Object.fromEntries(formData);
+        try {
+            await window.fetch(`${API}/posts`, {
+                method: 'POST',
+                body: JSON.stringify(newPost),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            e.target.reset();
+            closeHandler();
+        }
     }
 
     const closeHandler = () => {
