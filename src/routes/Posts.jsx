@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import PostsList from '../components/posts-list/PostsList';
 import { API } from '../js/api';
+import { Outlet } from 'react-router-dom';
+import { useToggleModal } from '../contexts/ModalProvider';
 
 function Posts() {
     const [postsList, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { newPost } = useToggleModal();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -15,13 +18,16 @@ function Posts() {
             setIsLoading(false);
         }
         fetchPosts();
-    }, []);
+    }, [newPost]);
 
     return (
         <>
-            {(postsList.length > 0) && <PostsList posts={postsList} />}
-            {isLoading && 'Loading Posts...'}
-            {!isLoading && postsList.length === 0 && 'There are no posts available. Please add new to view them.'}
+            <Outlet />
+            <main>
+                {(postsList.length > 0 && !isLoading) && <PostsList posts={postsList} />}
+                {isLoading && 'Loading Posts...'}
+                {!isLoading && postsList.length === 0 && 'There are no posts available. Please add new to view them.'}
+            </main>
         </>
     )
 }

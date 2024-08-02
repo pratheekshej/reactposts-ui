@@ -2,9 +2,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/modal/Modal';
 import classes from './NewPost.module.css';
 import { API } from '../../js/api';
+import { useToggleModal } from '../../contexts/ModalProvider';
 
 const NewPost = ({ }) => {
     const navigate = useNavigate();
+    const { addNewPost } = useToggleModal();
 
     const handleSubmitPosts = async (e) => {
         e.preventDefault();
@@ -23,6 +25,7 @@ const NewPost = ({ }) => {
         } finally {
             e.target.reset();
             closeHandler();
+            addNewPost(newPost);
         }
     }
 
