@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
 import { ModalProvider } from './contexts/ModalProvider.jsx';
+import App from './App.jsx';
+import './index.css'
 
 const root = document.getElementById('root');
 const reactDOM = ReactDOM.createRoot(root);

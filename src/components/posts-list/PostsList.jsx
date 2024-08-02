@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Post from '../post/Post'
 import classes from './PostsList.module.css'
-import NewPost from '../new-post/NewPost';
+import NewPost from '../../routes/new-post/NewPost';
 import Modal from '../modal/Modal';
 import { useToggleModal } from '../../contexts/ModalProvider';
 import { API } from '../../js/api';
 
 const PostsList = ({ posts }) => {
-    const { isModalVisible, setCloseModal, newPost } = useToggleModal();
+    const { newPost } = useToggleModal();
     const [appPosts, setAppPosts] = useState(posts);
 
     useEffect(() => {
@@ -29,12 +29,6 @@ const PostsList = ({ posts }) => {
 
     return (
         <>
-            {
-                isModalVisible &&
-                <Modal onClose={setCloseModal}>
-                    <NewPost />
-                </Modal>
-            }
             <ul className={classes.posts}>
                 {appPosts.map(post => (
                     <Post

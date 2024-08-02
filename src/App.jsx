@@ -1,31 +1,22 @@
-import { useEffect, useState } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css'
-import MainHeader from './components/main-header/MainHeader'
-import PostsList from './components/posts-list/PostsList'
-import { API } from './js/api';
+import RootLayout from './routes/RootLayout';
+import Posts from './routes/Posts';
+import NewPost from './routes/new-post/NewPost';
+
+const appRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      { path: '/', index: true, element: <Posts /> },
+      { path: '/create-post', element: <NewPost /> },
+    ]
+  },
+]);
 
 function App() {
-  const [postsList, setPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await fetch(`${API}/posts`);
-      const { posts } = await res.json();
-      setPosts(posts);
-    }
-    fetchPosts();
-  }, []);
-
-  return (
-    <main>
-      <MainHeader />
-      {
-        (postsList.length > 0) &&
-        <PostsList posts={postsList} />
-      }
-      {postsList.length === 0 && 'Loading Posts...'}
-    </main>
-  )
+  return <RouterProvider router={appRouter} />
 }
 
 export default App
