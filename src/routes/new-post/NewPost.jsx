@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../components/modal/Modal';
 import classes from './NewPost.module.css';
-import { API } from '../../js/api';
+import { API, postAPI } from '../../js/api';
 import { useToggleModal } from '../../contexts/ModalProvider';
 
 const NewPost = ({ }) => {
@@ -13,25 +13,17 @@ const NewPost = ({ }) => {
         const formData = new FormData(e.target);
         const newPost = Object.fromEntries(formData);
         try {
-            await window.fetch(`${API}/posts`, {
-                method: 'POST',
-                body: JSON.stringify(newPost),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            await window.fetch(`${API}/posts`, postAPI(newPost));
         } catch (error) {
             console.error(error);
         } finally {
             e.target.reset();
-            closeHandler();
             addNewPost(newPost);
+            closeHandler();
         }
     }
 
-    const closeHandler = () => {
-        navigate(-1)
-    }
+    const closeHandler = () => navigate(-1)
 
     return (
         <Modal onClose={closeHandler}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import PostsList from '../components/posts-list/PostsList';
 import { API } from '../js/api';
 import { Outlet } from 'react-router-dom';
@@ -21,14 +21,14 @@ function Posts() {
     }, [newPost]);
 
     return (
-        <>
+        <Fragment>
             <Outlet />
             <main>
-                {(postsList.length > 0 && !isLoading) && <PostsList posts={postsList} />}
                 {isLoading && 'Loading Posts...'}
                 {!isLoading && postsList.length === 0 && 'There are no posts available. Please add new to view them.'}
+                {(postsList.length > 0) && <PostsList posts={postsList} />}
             </main>
-        </>
+        </Fragment>
     )
 }
 
