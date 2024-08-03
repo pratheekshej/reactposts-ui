@@ -1,8 +1,9 @@
 import { useLoaderData, Link } from 'react-router-dom';
 import classes from './PostDetails.module.css';
 import Modal from '../../components/modal/Modal';
+import { API, getAPI } from '../../js/api';
 
-function PostDetails() {
+const PostDetails = () => {
     const post = useLoaderData();
 
     if (!post) {
@@ -32,3 +33,9 @@ function PostDetails() {
 }
 
 export default PostDetails;
+
+export const loader = async ({ params }) => {
+    const response = await fetch(`${API}/posts/${params.id}`, getAPI);
+    const { post } = await response.json();
+    return post;
+}
