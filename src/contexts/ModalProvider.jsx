@@ -8,10 +8,7 @@ const ModalContext = createContext({
     addNewPost: () => { }
 });
 
-export const useToggleModal = () => {
-    const { isModalVisible, setOpenModal, setCloseModal, addNewPost, newPost } = useContext(ModalContext);
-    return { isModalVisible, setOpenModal, setCloseModal, addNewPost, newPost };
-};
+export const useToggleModal = () => useContext(ModalContext);
 
 export const ModalProvider = ({ children }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
